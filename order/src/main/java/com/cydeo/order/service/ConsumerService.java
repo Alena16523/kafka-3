@@ -26,14 +26,12 @@ public class ConsumerService {
 
     @KafkaListener(topics = orderTopic)
     public void consumeMessage(@Payload String message,
-                               @Header(KafkaHeaders.TIMESTAMP) long timeStamp,
                                @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
                                @Header(KafkaHeaders.OFFSET) int offset) throws JsonProcessingException {
         log.info("message consumed {}", message);
 
         OrderDTO orderDTO = objectMapper.readValue(message, OrderDTO.class);
         System.out.println("order request consumed, order will be created " + orderDTO.getItem());
-        System.out.println("Timestamp " +timeStamp);
         System.out.println("PartitionId " +partition);
         System.out.println("Offset " +offset);
     }
